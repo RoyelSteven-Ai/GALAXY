@@ -270,4 +270,5 @@ with safe_open("model.safetensors", framework="pt", device="cpu") as f:
 
 感谢您访问 GALAXY - ALIEN 项目，期待与您在科技的最前沿共同探索未来！ 👽
 
-# License: Apache-2.0
+# License: Apache-2.0 
+# CC0 1.0 Universal
