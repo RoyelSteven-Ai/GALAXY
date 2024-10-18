@@ -1,0 +1,18 @@
+Run python -m pip install --upgrade pip
+  python -m pip install --upgrade pip
+  pip install numpy<2  # 降级 numpy 版本到小于 2，解决兼容性问题
+  pip install -r requirements.txt  # 安装其他依赖项
+  shell: /usr/bin/bash -e {0}
+  env:
+    CACHE_ON_FAILURE: false
+    CARGO_INCREMENTAL: 0
+  
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pip in /usr/lib/python3/dist-packages (22.0.2)
+Collecting pip
+  Downloading pip-24.2-py3-none-any.whl (1.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 27.8 MB/s eta 0:00:00
+Installing collected packages: pip
+Successfully installed pip-24.2
+/home/runner/work/_temp/4f30ad97-bec5-424e-b6f7-60a2351d3004.sh: line 2: 2: No such file or directory
+Error: Process completed with exit code 1.

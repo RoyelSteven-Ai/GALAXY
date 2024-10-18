@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Example</title>
+</head>
+<body>
+    <script type="module">
+        import { proxyConsole } from "https://cdn.jsdelivr.net/gh/ChatOnMac/chat-js@main/chat/modules/console-proxy.js";
+        
+        proxyConsole(); // 调用该模块中的函数
+    </script>
+</body>
+</html>
