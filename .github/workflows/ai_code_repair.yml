@@ -1,0 +1,26 @@
+name: AI Code Repair
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  codeql-analysis:
+    name: Analyze code with CodeQL
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'javascript,python' # Specify your language here
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
