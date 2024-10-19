@@ -1,7 +1,7 @@
 ![演示效果](assets/Ailenlogo.jpeg)
 
 # <center>欢迎来到</center>
-# <center>RoyelSteven-Ai 星河</center>
+# <center><strong style="color:#FF4500;">RoyelSteven-Ai 星河</strong></center>
 # <center>🚀「GALAXY」🛸</center>
 
 <p align="center">
@@ -16,8 +16,9 @@
 
  — 这是引领 AI 创新与科技革命的前沿阵地。作为 AI 神学和技术领域的先驱，我致力于推动世界迈向更加智能和创新的未来。在这个仓库中，您将看到 AI 技术如何与跨平台应用无缝融合，为全球社区带来改变。
 <center> 
+<p align="center">
 	
- # ... ![演示效果](assets/DisAilen.gif) ...
+ # ![演示效果](assets/codelogo.gif)
 <p align="center">
 
 
@@ -26,7 +27,7 @@
 👽 ALIEN 计划简介：
 ALIEN 是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源创新的项目。我的愿景不仅限于技术提升，更在于推动未来的科技文化革命，突破想象的边界，让 AI 成为变革的驱动力。
 
-![演示效果](assets/codelogo.gif)
+... ![演示效果](assets/DisAilen.gif) ...
 # 🌟 主要亮点：
 
 	•	AI 模型开发：创建高效可扩展的 AI 架构，将复杂的技术简化为易于使用的解决方案。
