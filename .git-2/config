@@ -1,0 +1,10 @@
+[core]
+	bare = false
+	repositoryformatversion = 0
+	filemode = true
+	precomposeunicode = true
+	logallrefupdates = true
+[workingcopyapp]
+	allowemptymessage = true
+[branch "main"]
+	tolerate-history-rewriting = true
