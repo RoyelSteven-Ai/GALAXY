@@ -39,3 +39,9 @@ jobs:
     - name: Run Tests
       run: |
         pytest --benchmark-json output.json benches/
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
