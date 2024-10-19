@@ -1,18 +1,56 @@
-Run python -m pip install --upgrade pip
-  python -m pip install --upgrade pip
-  pip install numpy<2  # 降级 numpy 版本到小于 2，解决兼容性问题
-  pip install -r requirements.txt  # 安装其他依赖项
-  shell: /usr/bin/bash -e {0}
-  env:
-    CACHE_ON_FAILURE: false
-    CARGO_INCREMENTAL: 0
-  
-Defaulting to user installation because normal site-packages is not writeable
-Requirement already satisfied: pip in /usr/lib/python3/dist-packages (22.0.2)
-Collecting pip
-  Downloading pip-24.2-py3-none-any.whl (1.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 27.8 MB/s eta 0:00:00
-Installing collected packages: pip
-Successfully installed pip-24.2
-/home/runner/work/_temp/4f30ad97-bec5-424e-b6f7-60a2351d3004.sh: line 2: 2: No such file or directory
-Error: Process completed with exit code 1.
+name: Simple benchmarks
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  deployments: write
+  contents: write
+
+jobs:
+  benchmark:
+    name: Performance regression check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+
+      - name: Install
+        working-directory: ./bindings/python
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+
+          pip install .[dev]
+      - name: Run tests
+        working-directory: ./bindings/python
+        run: |
+          cargo test
+          pytest --benchmark-json output.json benches/
+
+      - name: Download previous benchmark data
+        uses: actions/cache@v1
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-benchmark
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'pytest'
+          output-file-path: ./bindings/python/output.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          comment-on-alert: true
+          alert-comment-cc-users: '@Narsil'

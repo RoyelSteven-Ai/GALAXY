@@ -1,0 +1,51 @@
+name: Python Package using Conda
+
+on:
+  push:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10]
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v4
+
+      # 设置 Python 版本
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # 缓存 Conda 环境
+      - name: Cache conda environment
+        uses: actions/cache@v3
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ hashFiles('environment.yml') }}
+          restore-keys: |
+            conda-${{ runner.os }}-
+
+      # 安装 Conda 依赖并创建环境
+      - name: Set up Conda environment
+        run: |
+          echo "$CONDA/bin" >> $GITHUB_PATH
+          conda config --set always_yes yes --set changeps1 no
+          conda env create --file environment.yml || conda env update --file environment.yml
+          conda init bash
+          conda activate base
+
+      # 并行运行 Lint 和测试步骤
+      - name: Run Lint and Tests
+        run: |
+          conda install flake8 pytest -y
+          # 并行运行 flake8 和 pytest
+          (flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --max-line-length=127 --max-complexity=10) &
+          (pytest) &
+          wait
+
+      # 检查最终状态
+      - name: Finalize Build
+        run: echo "Build completed successfully!"
