@@ -19,7 +19,7 @@
 
 
 
-<center>![演示效果](assets/DisAilen.gif)
+<center> ![演示效果](assets/DisAilen.gif)
 <p align="center">
 
 
