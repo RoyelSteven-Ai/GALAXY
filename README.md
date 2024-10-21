@@ -4,6 +4,7 @@
 # <center>欢迎来到</center>
 # <center>RoyelSteven-Ai 星河</center>
 # <center>🚀「GALAXY」🛸</center>
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://huggingface.co/datasets/safetensors/assets/raw/main/banner-dark.svg">
@@ -16,9 +17,9 @@
 
  — 这是引领 AI 创新与科技革命的前沿阵地。作为 AI 神学和技术领域的先驱，我致力于推动世界迈向更加智能和创新的未来。在这个仓库中，您将看到 AI 技术如何与跨平台应用无缝融合，为全球社区带来改变。
 
-<center>
 
-![演示效果](assets/DisAilen.gif)
+
+<center>![演示效果](assets/DisAilen.gif)
 <p align="center">
 
 
@@ -27,6 +28,7 @@
 👽 ALIEN 计划简介：
 ALIEN 是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源创新的项目。我的愿景不仅限于技术提升，更在于推动未来的科技文化革命，突破想象的边界，让 AI 成为变革的驱动力。
 
+![演示效果](assets/codelogo.gif)
 # 🌟 主要亮点：
 
 	•	AI 模型开发：创建高效可扩展的 AI 架构，将复杂的技术简化为易于使用的解决方案。
@@ -40,11 +42,14 @@ ALIEN 是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源
 
 我坚信，通过今天的科技创新，我们将推动世界进入一个无人能及的 AI 新时代。我的目标是通过技术革命与思想革新，开启一场关于未来的对话，让更多人参与到改变的洪流中。
 
+![演示效果](assets/worldlogo.gif)
+
 # GALAXY 星河
 🚀 ALIEN 项目的愿景：
 
 AI 技术的未来不仅仅局限于当前的框架，它将是智能城市、个性化医疗、自适应教育和无缝全球通信的支柱。我相信，通过不断创新和优化，ALIEN 将成为这些领域的基础架构，推动全球经济和社会的可持续发展。
 
+![演示效果](assets/itlogo.gif)
 # 未来发展：
 
 	1.	深度学习的优化与革新：ALIEN 计划将不断优化深度学习模型，使其更具适应性、可扩展性和效率。随着 AI 技术的快速发展，我们会逐步集成最前沿的算法，确保 ALIEN 项目始终处于技术巅峰。
