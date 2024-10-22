@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>GALAXY AiLEN OFFICIAL</title>
+    <dateCreated>2024-10-15T18:16:28.795Z</dateCreated>
+    <dateModified>2024-10-15T18:16:28.795Z</dateModified>
+    <docs>http://dev.opml.org/spec2.html</docs>
+  </head>
+  <body>
+    <outline type="CodeKit.PackageCollection" id="709cea5f-c040-4472-ba45-a6753d1990fe" title="GALAXY AiLEN OFFICIAL" text="GALAXY AiLEN OFFICIAL">
+      <outline title="chat-js" type="CodeKit.CodePackage" repositoryURL="https://github.com/RoyelSteven-Ai/GALAXY.git" 
+               id="A642E2AB-30B5-4380-BDDD-B32F44AFFF0D" 
+               allowHosts="https://api.github.com"  <!-- 添加 GitHub API 基础 URL -->
+               allowAllHosts="false" 
+               isEnabled="true" 
+               text="chat-js">
+      </outline>
+    </outline>
+  </body>
+</opml>
