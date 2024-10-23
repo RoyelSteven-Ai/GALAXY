@@ -1,0 +1,93 @@
+/* 
+  Localizable.strings
+  AICat
+
+  Created by Lei Pan on 2023/4/19.
+  
+*/
+"Edit Prompt" = "프롬프트 편집";
+"Edit Model" = "모델 편집";
+"Clean Messages" = "메시지 지우기";
+"Are you sure to clean all messages?" = "모든 메시지를 지우시겠습니까?";
+"Sure" = "확인";
+"Cancel" = "취소";
+"Message content copied" = "메시지 내용이 복사되었습니다";
+"Say something" = "무엇이든 말해보세요";
+"Say something or enter 'space'" = "무언가를 말하거나 '스페이스'를 입력하세요";
+"AICat Premium" = "AICat 프리미엄";
+"CONVERSATIONS" = "대화";
+"New Chat" = "새 대화";
+"Delete" = "삭제";
+"Clear Conversations" = "대화 지우기";
+"Are you sure to clear all conversations" = "모든 대화를 지우시겠습니까?";
+"Updates & FAQ" = "업데이트 및 FAQ";
+"Settings" = "설정";
+"Edit Chat" = "대화 편집";
+"Chat Name" = "대화 이름";
+"Prompt (the prompt content helps set the behavior of the assistant. e.g. 'You are Steve Jobs, the creator of Apple' )" = "프롬프트 (프롬프트 내용은 어시스턴트의 동작을 설정하는 데 도움이 됩니다. 예 : '당신은 애플의 창시자 스티브 잡스입니다')";
+"Save" = "저장";
+"Add OpenAI API Key" = "OpenAI API 키 추가";
+"Enter API Key" = "API 키 입력";
+"[Where to get OpenAI API key?](https://platform.openai.com/account/api-keys)" = "[OpenAI API 키를 얻을 수 있는 곳은 어디인가요?](https://platform.openai.com/account/api-keys)";
+"Validate and Save" = "검증 및 저장";
+"API Key deleted!" = "API 키가 삭제되었습니다!";
+"Validate Failed!" = "검증 실패!";
+"OK" = "확인";
+"Enter api host" = "API 호스트 입력";
+"Reset" = "재설정";
+"ApiHost reset sucessfully!" = "API 호스트 재설정 성공!";
+"support" = "지원";
+"Learn Prompting" = "프롬프트 작성 방법 배우기";
+"Awesome prompts" = "좋은 프롬프트 예시";
+"Contact Us" = "문의하기";
+"Privacy and Policy" = "개인 정보 보호 및 정책";
+"Source Code" = "소스 코드";
+"Social" = "소셜";
+"More App" = "더 많은 앱";
+"You are in Develper Mode, enter API key" = "개발자 모드입니다. API 키를 입력하세요";
+"You are in Normal Mode" = "일반 모드입니다";
+"Epoch - Guitar Tuner" = "Epoch - 기타 조율기";
+"Guitar, Bass, Ukulele tuner, Metronome Practice Tracker" = "기타, 베이스, 우쿨렐레 조율기, 매트로놈 연습 트래커";
+"Higher token limit for dialogues" = "대화의 토큰 제한이 높아집니다";
+"Engage in dialogues with a higer token limit" = "더 높은 토큰 제한으로 대화에 참여하세요";
+"Unlimited custom prompts" = "무제한 맞춤형 프롬프트";
+"Enjoy different conversations without any restrictions" = "제한없이 다양한 대화를 즐기세요";
+"Get GPT4 access first" = "가장 먼저 GPT4 액세스하기";
+"Be the first to access GPT4, try out new and upcoming features." = "첫 번째로 GPT4에 액세스하고 새로운 기능을 시도해보세요.";
+"Restore Purchases" = "구매 복원";
+"Already Premium" = "이미 프리미엄입니다";
+"Auto renewal monthly, cancel at anytime" = "매월 자동 갱신, 언제든지 취소 가능";
+"Privacy Policy" = "개인 정보 보호 정책";
+"Terms of Use" = "이용 약관";
+"You get AICat Premium Now!" = "지금 AICat 프리미엄을 받으세요!";
+"Purchase failed!" = "구매 실패!";
+"You are not premium user!" = "프리미엄 사용자가 아닙니다!";
+"Context Messages" = "컨텍스트 메시지";
+"Model" = "모델";
+"Temperature" = "온도";
+
+"Export to Markdown" = "Markdown으로 내보내기";
+"Custom API" = "사용자 정의 API";
+"Buy me a can of cat food" = "고양이 사료 한 캔 사주세요";
+"Review on App Store" = "앱 스토어에서 리뷰 작성";
+"Upvote on Product Hunt" = "Product Hunt에서 우리를 지원해주세요";
+"Donate" = "기부";
+"Developer" = "개발자";
+"😿 Please use the App Store version for donations." = "기부를 위해서는 앱 스토어 버전을 사용해주세요.";
+"Thank you for your food 😻" = "음식을 주셔서 감사합니다 😻";
+"Buy food failed! 😿 (nil)" = "사료 구매에 실패했습니다! 😿 (nil)";
+"Api reset sucessful!" = "API가 재설정되었습니다!";
+"Validate Failed!" = "검증 실패!";
+"Image saved!" = "이미지가 저장되었습니다!";
+"Save image falied!" = "이미지 저장에 실패했습니다!";
+"Your ultimate AI assistant" = "당신의 궁극적인 AI 어시스턴트";
+"Save your image" = "이미지 저장하기";
+"Choose a folder and a name to store the image." = "이미지를 저장할 폴더와 이름을 선택하세요.";
+"Image file name:" = "이미지 파일 이름:";
+"Export your messages" = "당신의 메시지 내보내기";
+"Choose a folder and a name to store the Markdown file." = "Markdown 파일을 저장할 폴더와 이름을 선택하세요.";
+"Messages file name:" = "메시지 파일 이름:";
+"Not synchronized yet." = "아직 동기화되지 않음";
+"iCloud Sync" = "iCloud 동기화";
+"NEW SESSION" = "새로운 세션";
+"Sync all conversations and messages across different devices." = "다른 장치 간 모든 대화 및 메시지 동기화";
