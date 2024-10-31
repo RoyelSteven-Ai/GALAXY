@@ -1,0 +1,32 @@
+name: iOS Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build Project
+        run: |
+          xcodebuild -workspace YourProject.xcworkspace \
+                     -scheme YourSchemeName \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $PWD/build/YourApp.xcarchive \
+                     clean archive
+      - name: Export .app file
+        run: |
+          xcodebuild -exportArchive \
+                     -archivePath $PWD/build/YourApp.xcarchive \
+                     -exportOptionsPlist ExportOptions.plist \
+                     -exportPath $PWD/build
