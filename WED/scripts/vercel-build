@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "vercel-build": "npm run build",
+    "build": "next build"  // 根据你的项目框架，这里可以是 "react-scripts build" 或其他打包命令
+  }
+}
