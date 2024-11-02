@@ -25,6 +25,11 @@
     "submit": "bun scripts/autoSubmit.ts",
     "test": "bun scripts/test.ts",
     "test:locale": "bun scripts/testLocale.ts"
+{
+  "dependencies": {
+    "consola": "^3.0.0"  // 
+  }
+}
   },
   "devDependencies": {
     "@lobehub/lint": "^1.24.3",
