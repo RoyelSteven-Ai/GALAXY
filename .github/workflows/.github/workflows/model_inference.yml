@@ -1,0 +1,33 @@
+name: Test Model Inference
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install llama-cpp-python
+      run: |
+        # 安装 llama-cpp-python 库
+        pip install llama-cpp-python
+        # 如果你希望使用 GPU 支持，可以选择 CUDA 选项
+        # pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+
+    - name: Run model inference test
+      run: |
+        python test_model.py  # 这个脚本将加载 GGUF 模型并执行推理
