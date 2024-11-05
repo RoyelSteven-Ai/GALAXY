@@ -1,14 +1,14 @@
 {
-  "name": "@lobehub/agents-index",
+  "name": "Galaxy-Ai",
   "version": "1.2.1",
   "description": "LobeChat awesome agents index",
-  "homepage": "https://github.com/lobehub/lobe-chat-agents",
+  "homepage": "https://github.com/RoyelSteven-Ai/GALAXY",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lobehub/lobe-chat-agents.git"
+    "url": "https://github.com/RoyelSteven-Ai/GALAXY/main/WED/"
   },
   "license": "MIT",
-  "author": "LobeHub <i@lobehub.com>",
+  "author": "LobeHub <galaxy-ai.vip>",
   "type": "module",
   "main": "public/index.json",
   "files": [
