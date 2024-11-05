@@ -1,5 +1,5 @@
 {
-  "name": "Galaxy-Ai",
+  "name": "GALAXY-AI",
   "version": "1.2.1",
   "description": "LobeChat awesome agents index",
   "homepage": "https://github.com/RoyelSteven-Ai/GALAXY",
@@ -8,7 +8,7 @@
     "url": "https://github.com/RoyelSteven-Ai/GALAXY/main/WED/"
   },
   "license": "MIT",
-  "author": "Galaxy-Ai <galaxy-ai.vip>",
+  "author": "GALAXY-AI <galaxy-ai.vip>",
   "type": "module",
   "main": "public/index.json",
   "files": [
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "awesome": "bun scripts/build.ts && bun scripts/updateAwesome.ts",
-    "build": "bun scripts/build.ts",
+    "build": "react-scripts build --output public",
     "format": "bun scripts/format.ts",
     "lint": "eslint \"scripts/**/*.ts\" --fix",
     "lint:md": "remark . --quiet --output",
