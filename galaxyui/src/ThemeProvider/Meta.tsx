@@ -9,7 +9,7 @@ export interface MetaProps {
 }
 
 const Meta = memo<MetaProps>(
-  ({ title = 'LobeHub', description = 'Empowering your AI dreams with LobeHub', withManifest }) => {
+  ({ title = 'RoyelSteven-Ai', description = 'Empowering your AI dreams with GALAXY-AI', withManifest }) => {
     const genCdnUrl = useCdnFn();
     const genAssets = useCallback(
       (path: string) =>

@@ -1,4 +1,4 @@
-import { Footer, FooterProps } from '@lobehub/ui';
+import { Footer, FooterProps } from 'galaxyui';
 
 const columns: FooterProps['columns'] = [
   {
@@ -6,8 +6,8 @@ const columns: FooterProps['columns'] = [
       {
         description: 'AIGC Components',
         openExternal: true,
-        title: '🤯 Lobe UI',
-        url: 'https://github.com/lobehub/lobe-ui',
+        title: '🤯 GALAXY UI',
+        url: 'https://github.com/RoyelSteven-Ai/GALAXY/galaxyui',
       },
       {
         description: 'Chatbot Client',

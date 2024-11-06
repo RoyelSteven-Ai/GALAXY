@@ -4,7 +4,7 @@ import {
   ChatInputArea,
   ChatSendButton,
   TokenTag,
-} from '@lobehub/ui';
+} from 'galaxyui';
 import { Eraser, Languages } from 'lucide-react';
 import { Flexbox } from 'react-layout-kit';
 
