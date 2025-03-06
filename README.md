@@ -1,12 +1,12 @@
 <center>
 
-![演示效果](assets/Galaxy.gif)
+![演示效果](assets/1280x640-GITHUB.png)
 	
 <p align="center">
 
-# <center>欢迎来到</center>
-# <center>RoyelSteven-Ai 星河 GΛLAΞY WΘRLD APPLICATION AGI</center>
-# <center>🚀「GALAXY」🛸</center>
+## <p align="center" style="font-size:30px; color:#32CD32;">欢迎来到</p> </center>
+## <p align="center" style="font-size:30px; color:#32CD32;">GΛLAΞY WΘRLD AᘐI</p> </center>
+## <p align="center" style="font-size:30px; color:#32CD32;">RθYΞLSTΞVΞΠ PRESENT</p> </center>
 
 <p align="center">
   <picture>
@@ -18,39 +18,35 @@
   <br/>
 </p>
 
- — 这是引领 AI 创新与科技革命的前沿阵地。作为 AI 神学和技术领域的先驱，我致力于推动世界迈向更加智能和创新的未来。在这个仓库中，您将看到 AI 技术如何与跨平台应用无缝融合，为全球社区带来改变。
+# <p align="center" style="font-size:20px; color:#32CD32;">这是引领 AI 创新与科技革命的前沿阵地。作为 AI 神学和技术领域的先驱，我致力于推动世界迈向更加智能和创新的未来。在这个仓库中，您将看到 AI 技术如何与跨平台应用无缝融合，为全球社区带来改变。</p>
 
 
-
-<center>![演示效果](assets/DisAilen.gif)
+# <p align="center" style="font-size:60px; color:#32CD32;">银河科技 AGI 即将到来的惊喜</p>
+## <p align="center" style="font-size:30px; color:#32CD32;">WWW.GALAXY-AI.VIP</p> 
 <p align="center">
-
-
-
-# GALAXY 星河
-👽 ALIEN 计划简介：
-ALIEN 是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源创新的项目。我的愿景不仅限于技术提升，更在于推动未来的科技文化革命，突破想象的边界，让 AI 成为变革的驱动力。
+  <span style="font-size:8px; color:#32CD32;">是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源创新的项目。我的愿景不仅限于技术提升，更在于推动未来的科技文化革命，突破想象的边界，让 AI 成为变革的驱动力。</p> 
 
 ![演示效果](assets/codelogo.gif)
-# 🌟 主要亮点：
+# <p align="center" style="font-size:20px; color:#32CD32;">🌟 主要亮点 🌟</p> 
 
 	•	AI 模型开发：创建高效可扩展的 AI 架构，将复杂的技术简化为易于使用的解决方案。
 	•	跨平台集成：将 AI 技术与 iOS 等多个平台深度融合，打造移动设备上的 AI 生态系统。
 	•	隐私与安全：通过创新的 Safetensors 格式，确保用户数据的高度安全性，保护个人隐私，防止恶意代码攻击。
 	•	全球开源贡献：秉承开源精神，分享我对 AI 和机器学习的突破性创新，让更多开发者加入科技变革的浪潮。
 
-# 💡 核心信念：
+# <p align="center" style="font-size:20px; color:#32CD32;">💡 核心信念 💡</p>
 
-	“颠覆今天，主宰明天。”
+	git@github.com:RoyelSteven-Ai/GALAXY.git “颠覆今天，主宰明天。”
 
-我坚信，通过今天的科技创新，我们将推动世界进入一个无人能及的 AI 新时代。我的目标是通过技术革命与思想革新，开启一场关于未来的对话，让更多人参与到改变的洪流中。
+<p align="center">
+  <span style="font-size:8px; color:#32CD32;">我坚信，通过今天的科技创新，我们将推动世界进入一个无人能及的 AI 新时代。我的目标是通过技术革命与思想革新，开启一场关于未来的对话，让更多人参与到改变的洪流中</p>
+
 
 ![演示效果](assets/worldlogo.gif)
 
-# GALAXY 星河
-🚀 ALIEN 项目的愿景：
-
-AI 技术的未来不仅仅局限于当前的框架，它将是智能城市、个性化医疗、自适应教育和无缝全球通信的支柱。我相信，通过不断创新和优化，ALIEN 将成为这些领域的基础架构，推动全球经济和社会的可持续发展。
+# <p align="center" style="font-size:20px; color:#32CD32;">🚀 银河科技 🚀</p>
+<p align="center">
+  <span style="font-size:8px; color:#32CD32;">AI 技术的未来不仅仅局限于当前的框架，它将是智能城市、个性化医疗、自适应教育和无缝全球通信的支柱。我相信，通过不断创新和优化，ALIEN 将成为这些领域的基础架构，推动全球经济和社会的可持续发展</p>
 
 ![演示效果](assets/itlogo.gif)
 # 未来发展：
