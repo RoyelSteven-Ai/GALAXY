@@ -1,0 +1,174 @@
+name: Publish Database Docker Image
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  pull_request:
+    types: [synchronize, labeled, unlabeled]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY_IMAGE: lobehub/lobe-chat-database
+  PR_TAG_PREFIX: pr-
+  CACHE_TTL: 7 # 新增缓存保留天数
+
+jobs:
+  build:
+    if: |
+      (github.event_name == 'pull_request' &&
+       contains(github.event.pull_request.labels.*.name, 'Build Docker')) ||
+      github.event_name != 'pull_request'
+    
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+        include:
+          - platform: linux/amd64
+            os: ubuntu-latest
+          - platform: linux/arm64
+            os: self-hosted.arm64 # 建议使用自托管 ARM runner
+
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.platform }} Image
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Docker layer caching
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.REGISTRY_IMAGE }}-${{ hashFiles('Dockerfile.database') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ env.REGISTRY_IMAGE }}-
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+
+      - name: Generate PR metadata
+        if: github.event_name == 'pull_request'
+        id: pr_meta
+        run: |
+          safe_branch=$(echo "${{ github.head_ref }}" | tr -cd 'a-zA-Z0-9_-' | cut -c1-30)
+          echo "pr_tag=${safe_branch}-$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
+          flavor: |
+            latest=${{ github.event_name != 'pull_request' }}
+          tags: |
+            type=raw,value=${{ env.PR_TAG_PREFIX }}${{ steps.pr_meta.outputs.pr_tag }},enable=${{ github.event_name == 'pull_request' }}
+            type=raw,value=nightly-$(date +'%Y%m%d'),enable=${{ github.ref == 'refs/heads/main' }}
+            type=semver,pattern={{version}},enable=${{ github.event_name != 'pull_request' }}
+            type=raw,value=latest,enable=${{ github.event_name != 'pull_request' }}
+
+      - name: Build and scan
+        uses: docker/build-push-action@v5
+        with:
+          platforms: ${{ matrix.platform }}
+          context: .
+          file: ./Dockerfile.database
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+          outputs: |
+            type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=${{ !github.event.pull_request }}
+            type=docker
+
+      - name: Security scan
+        uses: aquasecurity/trivy-action@0.18
+        with:
+          image-ref: ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+          format: 'table'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+
+      - name: Smoke test
+        run: |
+          docker run --rm -d --name test-db ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+          docker exec test-db healthcheck.sh
+          docker stop test-db
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-metadata
+          path: |
+            ${{ steps.meta.outputs.json }}
+            ${{ steps.build.outputs.digest }}
+
+  integration-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run integration tests
+        uses: ./tests/integration
+        env:
+          DB_IMAGE: ${{ env.REGISTRY_IMAGE }}:${{ needs.build.outputs.version }}
+
+  publish:
+    needs: [build, integration-test]
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Create manifest
+        uses: docker/manifest-action@v2
+        with:
+          target: ${{ env.REGISTRY_IMAGE }}
+          images: |
+            ${{ env.REGISTRY_IMAGE }}@sha256:*
+
+      - name: Publish documentation
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `db-${process.env.VERSION}`,
+              name: `Database ${process.env.VERSION}`,
+              body: "Database image release notes",
+              draft: false,
+              prerelease: false
+            })
+
+  notify:
+    needs: publish
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "Database ${{ needs.publish.outputs.version }} ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Database Image ${{ job.status }}*"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_WEBHOOK }}
