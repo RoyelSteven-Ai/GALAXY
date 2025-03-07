@@ -1,0 +1,156 @@
+name: Publish Docker Pglite Image
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  pull_request:
+    types: [synchronize, labeled, unlabeled]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY_IMAGE: lobehub/lobe-chat-pglite
+  PR_TAG_PREFIX: pr-
+  CACHE_VERSION: v2 # 缓存版本标识
+
+jobs:
+  precheck:
+    name: Pre-Check
+    runs-on: ubuntu-latest
+    outputs:
+      safe_to_build: ${{ steps.validation.outputs.safe }}
+    steps:
+      - name: Validate Dockerfile
+        uses: docker/actions-toolkit@v2
+        with:
+          command: |
+            if ! grep -q 'HEALTHCHECK' Dockerfile.pglite; then
+              echo "::error::Missing HEALTHCHECK instruction"
+              exit 1
+            fi
+
+  build:
+    needs: precheck
+    if: |
+      (needs.precheck.outputs.safe_to_build == 'true') &&
+      ((github.event_name == 'pull_request' &&
+       contains(github.event.pull_request.labels.*.name, 'Build Docker')) ||
+      github.event_name != 'pull_request')
+
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+        os: [ubuntu-latest, self-hosted.arm64]
+        exclude:
+          - platform: linux/arm64
+            os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.platform }}
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Cache optimization
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/buildkit
+            /tmp/buildx
+          key: ${{ runner.os }}-pglite-${{ env.CACHE_VERSION }}-${{ hashFiles('Dockerfile.pglite') }}
+          restore-keys: |
+            ${{ runner.os }}-pglite-${{ env.CACHE_VERSION }}-
+
+      - name: Intelligent build setup
+        uses: docker/setup-buildx-action@v3
+        with:
+          config-inline: |
+            [registry."${{ secrets.DOCKER_REGISTRY }}"]
+              http = true
+              insecure = false
+          driver-opts: |
+            network=host
+
+      - name: Dynamic tagging
+        id: tagger
+        uses: mathieudutour/github-tag-action@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prefix: pglite-
+
+      - name: Build with security
+        uses: docker/build-push-action@v5
+        with:
+          platforms: ${{ matrix.platform }}
+          context: .
+          file: ./Dockerfile.pglite
+          provenance: true
+          sbom: true
+          outputs: |
+            type=image,name=${{ env.REGISTRY_IMAGE }},push=true,tags=${{ steps.tagger.outputs.tag }}
+            type=metadata,annotation-index=1
+
+      - name: Vulnerability scan
+        uses: anchore/scan-action@v3
+        with:
+          image: ${{ env.REGISTRY_IMAGE }}:${{ steps.tagger.outputs.tag }}
+          fail-build: true
+          severity-cutoff: high
+
+  integration:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+    steps:
+      - name: Run compatibility tests
+        uses: ./tests/pglite-integration
+        env:
+          PGLITE_IMAGE: ${{ env.REGISTRY_IMAGE }}:${{ needs.build.outputs.version }}
+
+  deploy:
+    needs: [build, integration]
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    environment: production
+    steps:
+      - name: Deploy with canary
+        uses: hashicorp/terraform-github-actions@v2
+        with:
+          tf_actions_version: 1.6.0
+          tf_actions_subcommand: apply
+          tf_actions_working_dir: infra/pglite
+          tf_actions_vars: |
+            image_version=${{ needs.build.outputs.version }}
+
+      - name: Rollout monitoring
+        run: |
+          kubectl rollout status deployment/pglite --timeout=300s
+
+  post-action:
+    needs: [deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup resources
+        if: failure()
+        run: |
+          kubectl rollout undo deployment/pglite
+          
+      - name: Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: ci-alerts
+          SLACK_COLOR: ${{ job.status == 'success' && '#36a64f' || '#ff0000' }}
+          SLACK_MESSAGE: "Pglite ${{ needs.build.outputs.version }} ${{ job.status }}"
+          SLACK_TITLE: "Deployment Result"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
