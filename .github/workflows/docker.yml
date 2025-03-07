@@ -1,0 +1,169 @@
+name: Advanced Docker Image CI/CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+  release:
+    types: [published]
+  pull_request:
+    types: [synchronize, labeled, unlabeled]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY_IMAGE: lobehub/lobe-chat
+  PR_TAG_PREFIX: pr-
+  CACHE_VERSION: v3
+
+jobs:
+  preflight:
+    name: Pre-Flight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      build_approval: ${{ steps.checks.outputs.approved }}
+    steps:
+      - name: Architecture Validation
+        uses: docker/actions-toolkit@v2
+        with:
+          command: |
+            if ! grep -q 'multiarch' Dockerfile; then
+              echo "::error::Dockerfile缺少多架构支持配置"
+              exit 1
+            fi
+
+  build:
+    needs: preflight
+    if: ${{ needs.preflight.outputs.build_approval == 'true' }}
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+        os: [ubuntu-latest, self-hosted.arm64]
+        exclude:
+          - platform: linux/arm64
+            os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.platform }}
+    steps:
+      - name: Smart Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Cache Optimization
+        uses: actions/cache@v3
+        with:
+          path: /tmp/buildx
+          key: ${{ runner.os }}-buildx-${{ env.CACHE_VERSION }}-${{ hashFiles('Dockerfile') }}
+          
+      - name: Buildx Setup
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          buildkitd-config: |
+            [worker.oci]
+              max-parallelism = 4
+
+      - name: Dynamic Versioning
+        id: version
+        uses: dylanrayoussef/version-check@v2
+        with:
+          current-version: file:VERSION
+
+      - name: Secure Build
+        uses: docker/build-push-action@v5
+        with:
+          platforms: ${{ matrix.platform }}
+          context: .
+          file: ./Dockerfile
+          provenance: true
+          sbom: true
+          outputs: |
+            type=image,name=${{ env.REGISTRY_IMAGE }},push=true,tags=${{ steps.version.outputs.new_version }}
+            type=cache,compression=zstd
+
+      - name: Runtime Security Scan
+        uses: aquasecurity/trivy-action@0.18
+        with:
+          image-ref: ${{ env.REGISTRY_IMAGE }}:${{ steps.version.outputs.new_version }}
+          severity: HIGH,CRITICAL
+          exit-code: 1
+
+  quality-gate:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - name: Load Test
+        uses: loadimpact/k6-action@v4
+        with:
+          script: tests/load-test.js
+          duration: 5m
+          vus: 100
+
+      - name: API Validation
+        uses: postman/newman-action@v3
+        with:
+          collection: tests/api-suite.postman_collection.json
+
+  deploy:
+    needs: [build, quality-gate]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
+    strategy:
+      canary:
+        steps:
+          - name: Canary Deployment
+            uses: hashicorp/terraform-github-actions@v2
+            with:
+              tf_actions_working_dir: infra/canary
+              tf_actions_vars: |
+                image_version=${{ needs.build.outputs.new_version }}
+
+          - name: Traffic Shift
+            run: |
+              kubectl set image deployment/canary *=${IMAGE}:${VERSION}
+              kubectl rollout status deployment/canary --timeout=300s
+
+    steps:
+      - name: Blue-Green Deployment
+        if: success()
+        uses: azure/k8s-deploy@v3
+        with:
+          strategy: blue-green
+          manifests: |
+            deployment.yaml
+          images: |
+            ${{ env.REGISTRY_IMAGE }}:${{ needs.build.outputs.new_version }}
+
+  post-deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Analysis
+        uses: google/github-actions/stackdriver@v1
+        with:
+          service: lobe-chat
+          logs: |
+            **/*.log
+            
+      - name: Performance Metrics
+        uses: loadimpact/k6-reporter-action@v1
+        with:
+          file: results.xml
+
+      - name: Smart Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_OPS }}
+          SLACK_MESSAGE: |
+            *部署完成* 🚀
+            版本: ${{ needs.build.outputs.new_version }}
+            环境: ${{ inputs.environment }}
+            持续时间: ${{ job.duration }}秒
